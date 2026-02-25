@@ -37,9 +37,9 @@ export default function Button({
     <button
       disabled={disabled || loading}
       className={`inline-flex items-center justify-center gap-2 rounded-xl font-semibold
-        transition-all duration-200 focus-ring
+        transition-all duration-300 focus-ring
         disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none
-        active:scale-[0.97]
+        active:scale-[0.95] active:duration-100
         ${variants[variant]} ${sizes[size]} ${className}`}
       {...rest}
     >

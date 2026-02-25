@@ -8,7 +8,7 @@ import { useBooks } from '../hooks/useBooks';
 import { useFriends } from '../hooks/useFriends';
 import Badge from '../components/ui/Badge';
 import Card from '../components/ui/Card';
-import Loading from '../components/ui/Loading';
+import { SkeletonList } from '../components/ui/Skeleton';
 import EmptyState from '../components/ui/EmptyState';
 
 type Tab = 'all' | 'loaned' | 'returned';
@@ -19,7 +19,12 @@ export default function LoansPage() {
   const { data: friends } = useFriends();
   const [tab, setTab] = useState<Tab>('all');
 
-  if (loansLoading || booksLoading) return <Loading />;
+  if (loansLoading || booksLoading) return (
+    <div className="space-y-6 animate-fade-in">
+      <div><div className="h-8 w-28" /><div className="h-4 w-40 mt-1" /></div>
+      <SkeletonList count={5} type="card" />
+    </div>
+  );
 
   const filtered = loans.filter((l) => {
     if (tab === 'loaned') return l.status === 'loaned';

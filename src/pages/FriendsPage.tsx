@@ -5,8 +5,9 @@ import FriendForm from '../components/friends/FriendForm';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Modal from '../components/ui/Modal';
-import Loading from '../components/ui/Loading';
+import { SkeletonList } from '../components/ui/Skeleton';
 import EmptyState from '../components/ui/EmptyState';
+import { useToast } from '../components/ui/Toast';
 import type { FriendFormValues } from '../lib/validators';
 import type { Friend } from '../types';
 
@@ -16,25 +17,34 @@ export default function FriendsPage() {
   const updateFriend = useUpdateFriend();
   const deleteFriend = useDeleteFriend();
 
+  const toast = useToast();
   const [addModal, setAddModal] = useState(false);
   const [editTarget, setEditTarget] = useState<Friend | null>(null);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return (
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex items-center justify-between"><div className="h-8 w-28" /><div className="h-9 w-24" /></div>
+      <SkeletonList count={5} type="friend" />
+    </div>
+  );
 
   const handleAdd = async (values: FriendFormValues) => {
     await addFriend.mutateAsync(values);
     setAddModal(false);
+    toast.success('친구가 추가되었습니다');
   };
 
   const handleEdit = async (values: FriendFormValues) => {
     if (!editTarget) return;
     await updateFriend.mutateAsync({ id: editTarget.id, ...values });
     setEditTarget(null);
+    toast.success('친구 정보가 수정되었습니다');
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm('이 친구를 삭제하시겠습니까?')) return;
     await deleteFriend.mutateAsync(id);
+    toast.success('친구가 삭제되었습니다');
   };
 
   return (

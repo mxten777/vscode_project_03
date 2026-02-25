@@ -11,6 +11,7 @@ import BookDetailPage from "./pages/BookDetailPage";
 import FriendsPage from "./pages/FriendsPage";
 import LoansPage from "./pages/LoansPage";
 import StatsPage from "./pages/StatsPage";
+import { ToastProvider } from "./components/ui/Toast";
 import { BookOpen, AlertTriangle, Copy, CheckCircle } from "lucide-react";
 import { useState } from "react";
 
@@ -134,14 +135,14 @@ function LoginPage() {
     <div className="flex min-h-screen items-center justify-center p-4 relative overflow-hidden">
       {/* Decorative background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-primary-100/40" />
-      <div className="absolute top-[-20%] right-[-10%] h-[500px] w-[500px] rounded-full bg-gradient-to-br from-primary-200/30 to-primary-400/10 blur-3xl" />
-      <div className="absolute bottom-[-20%] left-[-10%] h-[400px] w-[400px] rounded-full bg-gradient-to-tr from-primary-300/20 to-primary-100/10 blur-3xl" />
+      <div className="absolute top-[-20%] right-[-10%] h-[500px] w-[500px] rounded-full bg-gradient-to-br from-primary-200/30 to-primary-400/10 blur-3xl animate-float" />
+      <div className="absolute bottom-[-20%] left-[-10%] h-[400px] w-[400px] rounded-full bg-gradient-to-tr from-primary-300/20 to-primary-100/10 blur-3xl animate-float" style={{ animationDelay: '2s' }} />
 
-      <div className="relative w-full max-w-sm animate-scale-in">
-        <div className="rounded-3xl bg-white/80 backdrop-blur-xl border border-white/60 p-8 shadow-2xl shadow-primary-500/5">
+      <div className="relative w-full max-w-sm animate-bounce-in">
+        <div className="rounded-3xl bg-white/80 backdrop-blur-xl border border-white/60 p-8 shadow-2xl shadow-primary-500/8">
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 shadow-lg shadow-primary-500/30 mb-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 shadow-xl shadow-primary-500/30 mb-4 animate-float">
               <BookOpen className="h-7 w-7 text-white" />
             </div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-800 to-primary-500 bg-clip-text text-transparent">
@@ -240,9 +241,11 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <BrowserRouter>
-          <ProtectedRoutes />
-        </BrowserRouter>
+        <ToastProvider>
+          <BrowserRouter>
+            <ProtectedRoutes />
+          </BrowserRouter>
+        </ToastProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

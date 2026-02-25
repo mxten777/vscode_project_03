@@ -14,9 +14,9 @@ export default function Card({ children, className = '', onClick, hover, style }
     <div
       onClick={onClick}
       style={style}
-      className={`rounded-2xl border border-white/60 bg-white/80 backdrop-blur-sm p-5 shadow-sm
+      className={`rounded-2xl border border-white/50 bg-white/80 backdrop-blur-sm p-5 shadow-sm
         transition-all duration-300
-        ${interactive ? 'cursor-pointer hover:shadow-lg hover:shadow-primary-500/5 hover:-translate-y-0.5 hover:border-primary-200/50' : ''}
+        ${interactive ? 'cursor-pointer hover:shadow-xl hover:shadow-primary-500/8 hover:-translate-y-1 hover:border-primary-200/60 active:scale-[0.98]' : ''}
         ${className}`}
     >
       {children}

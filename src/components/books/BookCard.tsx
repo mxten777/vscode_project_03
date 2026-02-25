@@ -5,32 +5,37 @@ import type { Book } from '../../types';
 
 interface Props {
   book: Book;
+  index?: number;
 }
 
-export default function BookCard({ book }: Props) {
+export default function BookCard({ book, index = 0 }: Props) {
   const navigate = useNavigate();
 
   return (
     <div
       onClick={() => navigate(`/books/${book.id}`)}
+      style={{ animationDelay: `${index * 40}ms` }}
       className="group flex gap-4 rounded-2xl border border-white/60 bg-white/80 backdrop-blur-sm p-4 shadow-sm
-        transition-all duration-300 cursor-pointer
-        hover:shadow-lg hover:shadow-primary-500/5 hover:-translate-y-0.5 hover:border-primary-200/50"
+        transition-all duration-300 cursor-pointer animate-fade-in
+        hover:shadow-xl hover:shadow-primary-500/8 hover:-translate-y-1 hover:border-primary-200/60
+        active:scale-[0.98] active:shadow-md"
     >
       {book.coverUrl ? (
         <img
           src={book.coverUrl}
           alt={book.title}
-          className="h-28 w-20 rounded-xl object-cover flex-shrink-0 shadow-sm ring-1 ring-black/5"
+          className="h-28 w-20 rounded-xl object-cover flex-shrink-0 shadow-md ring-1 ring-black/5
+            transition-transform duration-300 group-hover:scale-[1.03] group-hover:shadow-lg"
         />
       ) : (
-        <div className="flex h-28 w-20 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-50 to-primary-100/50 ring-1 ring-primary-100">
-          <BookOpen className="h-7 w-7 text-primary-300" />
+        <div className="flex h-28 w-20 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-50 via-primary-100/50 to-primary-50 ring-1 ring-primary-100
+          transition-all duration-300 group-hover:from-primary-100 group-hover:to-primary-100/80">
+          <BookOpen className="h-7 w-7 text-primary-300 transition-transform duration-300 group-hover:scale-110" />
         </div>
       )}
       <div className="flex flex-1 flex-col justify-between min-w-0 py-0.5">
         <div>
-          <h3 className="font-bold text-gray-900 truncate group-hover:text-primary-700 transition-colors">
+          <h3 className="font-bold text-gray-900 truncate group-hover:text-primary-700 transition-colors duration-200">
             {book.title}
           </h3>
           <p className="text-sm text-gray-500 truncate mt-0.5">{book.author}</p>
@@ -46,7 +51,7 @@ export default function BookCard({ book }: Props) {
         </div>
       </div>
       <div className="flex items-center flex-shrink-0">
-        <ChevronRight className="h-5 w-5 text-gray-300 group-hover:text-primary-400 transition-all duration-200 group-hover:translate-x-0.5" />
+        <ChevronRight className="h-5 w-5 text-gray-300 group-hover:text-primary-400 transition-all duration-300 group-hover:translate-x-1" />
       </div>
     </div>
   );

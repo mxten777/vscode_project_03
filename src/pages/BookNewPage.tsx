@@ -8,11 +8,13 @@ import BookForm from '../components/books/BookForm';
 import type { BookFormValues } from '../lib/validators';
 import { ImagePlus, ArrowLeft, Camera } from 'lucide-react';
 import Button from '../components/ui/Button';
+import { useToast } from '../components/ui/Toast';
 
 export default function BookNewPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const addBook = useAddBook();
+  const toast = useToast();
   const fileRef = useRef<HTMLInputElement>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
   const [coverFile, setCoverFile] = useState<File | null>(null);
@@ -37,6 +39,7 @@ export default function BookNewPage() {
     }
 
     await addBook.mutateAsync({ ...values, coverUrl });
+    toast.success('도서가 등록되었습니다');
     navigate('/books');
   };
 

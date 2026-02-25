@@ -26,16 +26,16 @@ export default function Modal({ open, onClose, title, children }: Props) {
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center animate-fade-in">
       {/* backdrop */}
       <div
-        className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/25 backdrop-blur-md transition-opacity"
         onClick={onClose}
       />
       {/* panel */}
-      <div className="relative z-10 w-full max-w-lg rounded-t-3xl sm:rounded-3xl bg-white p-6 sm:p-8 shadow-2xl max-h-[90vh] overflow-y-auto animate-slide-up">
+      <div className="relative z-10 w-full max-w-lg rounded-t-3xl sm:rounded-3xl bg-white/95 backdrop-blur-xl p-6 sm:p-8 shadow-2xl shadow-black/10 max-h-[90vh] overflow-y-auto animate-bounce-in border border-white/50">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-gray-900">{title}</h2>
           <button
             onClick={onClose}
-            className="rounded-xl p-2 hover:bg-gray-100 transition-all duration-200 active:scale-95"
+            className="rounded-xl p-2 hover:bg-gray-100 transition-all duration-200 active:scale-90"
           >
             <X className="h-5 w-5 text-gray-400" />
           </button>

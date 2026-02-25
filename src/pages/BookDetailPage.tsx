@@ -21,7 +21,8 @@ import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Modal from '../components/ui/Modal';
-import Loading from '../components/ui/Loading';
+import { SkeletonPulse } from '../components/ui/Skeleton';
+import { useToast } from '../components/ui/Toast';
 import LoanForm from '../components/books/LoanForm';
 import BookForm from '../components/books/BookForm';
 import NoteForm from '../components/notes/NoteForm';
@@ -40,12 +41,30 @@ export default function BookDetailPage() {
   const updateBook = useUpdateBook();
   const addNote = useAddNote();
   const deleteNote = useDeleteNote();
+  const toast = useToast();
 
   const [loanModal, setLoanModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [noteOpen, setNoteOpen] = useState(false);
 
-  if (booksLoading || loansLoading || notesLoading) return <Loading />;
+  if (booksLoading || loansLoading || notesLoading) return (
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex items-center gap-3">
+        <SkeletonPulse className="h-10 w-10" />
+        <SkeletonPulse className="h-7 w-48" />
+      </div>
+      <div className="flex gap-5 rounded-2xl border border-white/60 bg-white/60 backdrop-blur-sm p-5">
+        <SkeletonPulse className="h-40 w-28 flex-shrink-0" />
+        <div className="flex-1 space-y-3 py-1">
+          <SkeletonPulse className="h-6 w-3/4" />
+          <SkeletonPulse className="h-4 w-1/2" />
+          <SkeletonPulse className="h-4 w-1/3" />
+          <div className="flex gap-2 pt-2"><SkeletonPulse className="h-6 w-16 rounded-lg" /><SkeletonPulse className="h-6 w-14 rounded-lg" /></div>
+        </div>
+      </div>
+      <div className="flex gap-2.5"><SkeletonPulse className="h-10 w-24" /><SkeletonPulse className="h-10 w-20" /><SkeletonPulse className="h-10 w-16" /></div>
+    </div>
+  );
 
   const book = books.find((b) => b.id === id);
   if (!book) {
@@ -74,26 +93,31 @@ export default function BookDetailPage() {
       dueAt: values.dueAt || undefined,
     });
     setLoanModal(false);
+    toast.success('대여가 시작되었습니다');
   };
 
   const handleReturn = async () => {
     if (!activeLoan) return;
     await returnLoan.mutateAsync({ loanId: activeLoan.id, bookId: book.id });
+    toast.success('반납이 완료되었습니다');
   };
 
   const handleEdit = async (values: BookFormValues) => {
     await updateBook.mutateAsync({ id: book.id, ...values });
     setEditModal(false);
+    toast.success('도서 정보가 수정되었습니다');
   };
 
   const handleDelete = async () => {
     if (!confirm('정말 이 도서를 삭제하시겠습니까?')) return;
     await deleteBook.mutateAsync(book.id);
+    toast.success('도서가 삭제되었습니다');
     navigate('/books');
   };
 
   const handleNoteSubmit = async (values: NoteFormValues) => {
     await addNote.mutateAsync({ bookId: book.id, ...values });
+    toast.success('독후감이 등록되었습니다');
   };
 
   return (

@@ -4,7 +4,7 @@ import { Plus, BookOpen, Search, X } from 'lucide-react';
 import { useBooks } from '../hooks/useBooks';
 import BookCard from '../components/books/BookCard';
 import Button from '../components/ui/Button';
-import Loading from '../components/ui/Loading';
+import { SkeletonList } from '../components/ui/Skeleton';
 import EmptyState from '../components/ui/EmptyState';
 
 type Tab = 'all' | 'available' | 'loaned';
@@ -14,7 +14,12 @@ export default function BooksPage() {
   const [tab, setTab] = useState<Tab>('all');
   const [search, setSearch] = useState('');
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return (
+    <div className="space-y-5 animate-fade-in">
+      <div className="flex items-center justify-between"><div className="h-8 w-20" /><div className="h-9 w-24" /></div>
+      <SkeletonList count={5} type="card" />
+    </div>
+  );
 
   const filtered = books
     .filter((b) => {
@@ -110,8 +115,8 @@ export default function BooksPage() {
         />
       ) : (
         <div className="space-y-3">
-          {filtered.map((book) => (
-            <BookCard key={book.id} book={book} />
+          {filtered.map((book, i) => (
+            <BookCard key={book.id} book={book} index={i} />
           ))}
         </div>
       )}
